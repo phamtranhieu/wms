@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userAction } from '../../reducer/userReducer';
 import { useNavigate } from 'react-router-dom';
 import { setAccessToken, setUserAndPasswordLocal } from '../../helper/tokenHelper';
-import { userLogin, userRegister } from '../../service/auth/AuthService';
+import { userRegister } from '../../service/auth/AuthService';
 
 import './Register.scss';
 
@@ -16,6 +16,7 @@ export default function Register() {
 	const dispatch = useDispatch();
 	const [isSpin, setIsSpin] = useState(false);
 	const navigate = useNavigate();
+
 	const onFinish = (values: any) => {
 		console.log('Success:', values);
 		setIsSpin(true);

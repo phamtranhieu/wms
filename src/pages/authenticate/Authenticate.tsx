@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input, message, Spin } from 'antd';
 import { FolderOutlined, LockOutlined } from '@ant-design/icons';
 import { errorAuth } from '../../enum/auth/auth.error';
-import { userLogin } from '../../service/auth/AuthService';
+import { userLoginAdmin } from '../../service/auth/AuthService';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAction } from '../../reducer/userReducer';
 import { useNavigate } from 'react-router-dom';
@@ -18,7 +18,7 @@ export default function Authenticate() {
 	const onFinish = (values: any) => {
 		console.log('Success:', values);
 		setIsSpin(true);
-		userLogin(values)
+		userLoginAdmin(values)
 			.then(res => {
 				console.log(res);
 				if (res.data.success) {

@@ -7,6 +7,7 @@ import 'antd/dist/antd.css'; // or 'antd/dist/antd.less'
 import Authenticate from './pages/authenticate/Authenticate';
 import Register from './pages/register/Register';
 import ResetPass from './pages/reset/ResetPass';
+import Home from './pages/home/Home';
 
 function App() {
 	return (
@@ -15,6 +16,7 @@ function App() {
 				<Route index element={<Authenticate />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/reset-password" element={<ResetPass />} />
+				<Route path="/home" element={<Home />} />
 
 				{/* <Route path="/home" element={<Home />}>
 						<Route path="change-password" element={<ChangePassword />} />
