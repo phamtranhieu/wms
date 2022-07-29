@@ -8,9 +8,12 @@ import {
 	DownOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu } from 'antd';
+import { Breadcrumb, Layout, Menu, message } from 'antd';
 import React, { useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { userLogout } from '../../service/auth/AuthService';
+import { configApp } from '../../config/config';
+import { deleteAccessToken, deleteUserAndPasswordLocal } from '../../helper/tokenHelper';
 
 const { Header, Content, Footer, Sider } = Layout;
 import './Home.scss';
@@ -65,23 +68,23 @@ export default function Home() {
 	];
 
 	const handleLogout = () => {
-		// const accessToken = localStorage.getItem(configApp.tokenKey);
-		// userLogout(accessToken!)
-		// 	.then(res => {
-		// 		console.log(res);
-		// 		message.success(MessageConstantSuccess.loginSuccess);
-		// 		deleteUserAndPasswordLocal();
-		// 		navigate('/');
-		// 	})
-		// 	.catch(err => {
-		// 		message.error(MessageConstantError.logoutUnSuccess);
-		// 		console.log(err);
-		// 	});
-		// deleteAccessToken();
+		const accessToken = localStorage.getItem(configApp.tokenKey);
+		console.log(accessToken);
+		userLogout(accessToken)
+			.then(res => {
+				console.log(res);
+				message.success(res.data.message);
+				// deleteUserAndPasswordLocal();
+				deleteAccessToken();
+				navigate('/');
+			})
+			.catch(err => {
+				console.log(err);
+			});
 	};
 
 	const handleChangePass = () => {
-		// navigate('/home/change-password');
+		navigate('/change-password');
 	};
 
 	const onClick: MenuProps['onClick'] = e => {
@@ -116,13 +119,13 @@ export default function Home() {
 							<ul className="list text-white bg-white absolute w-[85px] top-[50px] left-[-45px]">
 								<li
 									className="text-[black] text-center h-[50px] leading-10 list_item"
-									// onClick={handleChangePass}
+									onClick={handleChangePass}
 								>
 									Đổi mật khẩu
 								</li>
 								<li
 									className=" text-[black] text-center h-[50px] leading-10 list_item"
-									// onClick={handleLogout}
+									onClick={handleLogout}
 								>
 									Đăng xuất
 								</li>

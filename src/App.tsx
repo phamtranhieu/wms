@@ -9,6 +9,7 @@ import Register from './pages/register/Register';
 import ResetPass from './pages/reset/ResetPass';
 import Home from './pages/home/Home';
 import ListUser from './pages/list-user/ListUser';
+import ChangePassword from './pages/change-password/ChangePassword';
 
 function App() {
 	return (
@@ -17,6 +18,7 @@ function App() {
 				<Route index element={<Authenticate />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/reset-password" element={<ResetPass />} />
+				<Route path="/change-password" element={<ChangePassword />} />
 				<Route path="/home" element={<Home />}>
 					<Route path="list-user" element={<ListUser />} />
 				</Route>

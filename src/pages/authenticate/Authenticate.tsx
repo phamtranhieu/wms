@@ -24,6 +24,7 @@ export default function Authenticate() {
 				if (res.data.success) {
 					dispatch(userAction.setUserLogin(res.data.results));
 					message.success(res.data.message);
+					setUserAndPasswordLocal(values);
 					setAccessToken(res.data.results.token);
 					setIsSpin(false);
 					navigate('/home');

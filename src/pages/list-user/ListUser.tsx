@@ -34,7 +34,7 @@ export default function ListUser() {
 	const typingTimeoutRef = useRef(null);
 	const { Search } = Input;
 	const [filterSearch, setFilterSearch] = useState<string>('');
-	const [numberActive, setNumberActive] = useState();
+	const [statusActive, setStatusActive] = useState();
 	const [numberPage, setNumberPage] = useState(1);
 	const [numberLimit, setNumberLimit] = useState(10);
 	const [lengtDataUser, setLengthDataUser] = useState<number>(0);
@@ -43,14 +43,15 @@ export default function ListUser() {
 		search: '',
 		page: '',
 		limit: '',
-		active: '',
+		// active: '',
+		status: '',
 	});
 	console.log(dataUser);
 	const [objParams, setObjParams] = useState({
 		search: '',
 		page: 1,
 		limit: 10,
-		active: '',
+		status: '',
 	});
 	console.log(dataUser);
 	useEffect(() => {
@@ -109,37 +110,37 @@ export default function ListUser() {
 			title: 'Status',
 			dataIndex: 'status',
 			key: 'status',
-			// render: (_, record) => (
-			// 	<Space size="middle">
-			// 		<Switch
-			// 			checked={record.status == 1}
-			// 			onChange={() => {
-			// 				handleSwitchStatus(record.uuid);
-			// 			}}
-			// 		/>
-			// 	</Space>
-			// ),
+			render: (_, record) => (
+				<Space size="middle">
+					<Switch
+						checked={record.status == 1}
+						onChange={() => {
+							handleSwitchStatus(record.uuid);
+						}}
+					/>
+				</Space>
+			),
 		},
 	];
 
-	const data: any = dataUser?.map((item: any, index: number) => {
-		return {
-			name: item.name,
-			phone: item.phone,
-			email: item.email,
-			role: item.role,
-			// active: item.active,
-			uuid: item.uuid,
-			status: (
-				<Switch
-					checked={item.status == 1 ? true : false}
-					onChange={() => {
-						handleSwitchStatus(item.uuid);
-					}}
-				/>
-			),
-		};
-	});
+	// const data: any = dataUser?.map((item: any, index: number) => {
+	// 	return {
+	// 		name: item.name,
+	// 		phone: item.phone,
+	// 		email: item.email,
+	// 		role: item.role,
+	// 		status: item.status,
+	// 		uuid: item.uuid,
+	// 		// status: (
+	// 		// 	<Switch
+	// 		// 		checked={item.status == 1 ? true : false}
+	// 		// 		onChange={(checked: boolean) => {
+	// 		// 			handleSwitchStatus(item.uuid);
+	// 		// 		}}
+	// 		// 	/>
+	// 		// ),
+	// 	};
+	// });
 
 	const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
 		setNumberLimit(pageSize);
@@ -154,7 +155,7 @@ export default function ListUser() {
 			search: filterSearch,
 			page: current.toString(),
 			limit: pageSize.toString(),
-			active: numberActive,
+			status: statusActive,
 		});
 	};
 
@@ -173,24 +174,23 @@ export default function ListUser() {
 					search: e.target.value,
 					page: `${numberPage}`,
 					limit: `${numberLimit}`,
-					active: numberActive,
+					status: statusActive,
 				});
 			}, 300);
 		}
 	};
-
 	const handleChangeSelect = (e: any) => {
-		setNumberActive(e);
+		setStatusActive(e);
 		setObjParams({
 			...objParams,
-			active: e,
+			status: e,
 		});
 		setSearchParams({
 			...searchParams,
 			search: filterSearch,
 			page: `${numberPage}`,
 			limit: `${numberLimit}`,
-			active: e,
+			status: e,
 		});
 	};
 
@@ -200,18 +200,17 @@ export default function ListUser() {
 				{
 					item.status == 1 ? (dataUser[index].status = 0) : (dataUser[index].status = 1);
 				}
-				console.log(item);
 			}
 		});
-		// changeStatusUser(paramsUuid)
-		// 	.then(res => {
-		// 		console.log(res);
-		// 		message.success(res.data.message);
-		// 	})
-		// 	.catch(err => {
-		// 		console.log(err);
-		// 		message.success(err.data.message);
-		// 	});
+		changeStatusUser(paramsUuid)
+			.then(res => {
+				console.log(res);
+				message.success(res.data.message);
+			})
+			.catch(err => {
+				console.log(err);
+				message.success(err.data.message);
+			});
 	};
 
 	return (
@@ -235,7 +234,7 @@ export default function ListUser() {
 					</Select>
 				</div>
 			</div>
-			<Table columns={columns} dataSource={data} pagination={false} />
+			<Table columns={columns} dataSource={dataUser} pagination={false} />
 			<div className="flex justify-end mt-3">
 				<Pagination
 					showSizeChanger

@@ -4,6 +4,7 @@ import { configApp } from '../../config/config';
 var qs = require('querystringify');
 
 export const getListUser = async (params: any) => {
+	console.log(params);
 	let objParamUrls = qs.stringify(params);
 	return await apiClient.get(`/list-users?${objParamUrls}`);
 };
