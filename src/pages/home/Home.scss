@@ -1,0 +1,10 @@
+.list {
+	visibility: hidden;
+}
+.button-down:hover .list {
+	visibility: visible;
+	cursor: pointer;
+}
+.list li:hover {
+	background-color: gray;
+}
