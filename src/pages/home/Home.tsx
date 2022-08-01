@@ -19,7 +19,6 @@ const { Header, Content, Footer, Sider } = Layout;
 import './Home.scss';
 
 export default function Home() {
-	const uuid = require('react-uuid');
 	type MenuItem = Required<MenuProps>['items'][number];
 	const { Header, Sider, Content } = Layout;
 	const navigate = useNavigate();
@@ -47,24 +46,10 @@ export default function Home() {
 			getItem('Nhóm người dùng', '/home/role-user'),
 		]),
 
-		getItem('QUẢN LÝ DỮ LIỆU NGUỒN', 'sub2', <FileOutlined />, [
-			// getItem('Option 5', '5'),
-			// getItem('Option 6', '6'),
-			// getItem('Submenu', 'sub3', null, [getItem('Option 7', '7'), getItem('Option 8', '8')]),
-		]),
+		getItem('QUẢN LÝ DỮ LIỆU NGUỒN', 'sub2', <FileOutlined />, []),
 
-		getItem('QUẢN LÝ MÁY MÓC THIẾT BỊ', 'sub3', <PieChartOutlined />, [
-			// getItem('Option 9', '9'),
-			// getItem('Option 10', '10'),
-			// getItem('Option 11', '11'),
-			// getItem('Option 12', '12'),
-		]),
-		getItem('QUẢN LÝ NGHIỆP VỤ', 'sub4', <TeamOutlined />, [
-			// getItem('Option 9', '9'),
-			// getItem('Option 10', '10'),
-			// getItem('Option 11', '11'),
-			// getItem('Option 12', '12'),
-		]),
+		getItem('QUẢN LÝ MÁY MÓC THIẾT BỊ', 'sub3', <PieChartOutlined />, []),
+		getItem('QUẢN LÝ NGHIỆP VỤ', 'sub4', <TeamOutlined />, []),
 	];
 
 	const handleLogout = () => {
@@ -92,16 +77,12 @@ export default function Home() {
 		navigate(e.key);
 	};
 	return (
-		<Layout style={{ minHeight: '100vh' }}>
+		<Layout className="bg-layout">
 			<Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
-				<div className="logo h-[64px] text-white flex items-center ml-[20px]">
-					{/* <UserOutlined className="mr-[20px]" />
-					<p className="mb-0">WEB ADMIN</p> */}
-				</div>
+				<div className="logo h-[64px] text-white flex items-center ml-[20px]"></div>
 				<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={onClick} />
 			</Sider>
 			<Layout className="site-layout">
-				{/* <Header className="site-layout-background" style={{ padding: 0 }} /> */}
 				<Header className="header flex items-center w-full justify-between">
 					<div className="flex items-center text-white ">
 						<UserOutlined
@@ -134,13 +115,6 @@ export default function Home() {
 					</div>
 				</Header>
 				<Content style={{ margin: '0 16px' }}>
-					{/* <Breadcrumb style={{ margin: '16px 0' }}>
-						<Breadcrumb.Item>User</Breadcrumb.Item>
-						<Breadcrumb.Item>Bill</Breadcrumb.Item>
-					</Breadcrumb>
-					<div className="site-layout-background" style={{ padding: 24, minHeight: 360 }}>
-						Bill is a cat.
-					</div> */}
 					<Outlet />
 				</Content>
 				<Footer style={{ textAlign: 'center' }}></Footer>

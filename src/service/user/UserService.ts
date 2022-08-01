@@ -10,5 +10,5 @@ export const getListUser = async (params: any) => {
 };
 
 export const changeStatusUser = async (uuidParams: string) => {
-	return await apiClient.post(`/delete-user/${uuidParams}`);
+	return await apiClient.post(`/change-status-user/${uuidParams}`);
 };

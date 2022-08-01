@@ -19,10 +19,14 @@ export default function Authenticate() {
 	const onFinish = (values: any) => {
 		console.log('Success:', values);
 		const accessToken = localStorage.getItem(configApp.tokenKey);
-
+		const sendParams = {
+			password: values.password_old,
+			password_new: values.password_new,
+		};
+		console.log(sendParams);
 		if (accessToken) {
 			setIsSpin(true);
-			userUpdatePassword(values)
+			userUpdatePassword(sendParams)
 				.then(res => {
 					console.log(res);
 					message.success(res.data.message);
@@ -71,7 +75,7 @@ export default function Authenticate() {
 							<div className="p-5">
 								<h1 className="mb-[20px] text-2xl font-sans text-center">CHANGE PASSWORD</h1>
 								<Form.Item
-									name="password-old"
+									name="password_old"
 									rules={[
 										{
 											validator(rule, val) {

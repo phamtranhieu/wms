@@ -13,14 +13,13 @@ import {
 	DownOutlined,
 } from '@ant-design/icons';
 import { dataActive } from './dataOptionActive';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
 
 interface DataType {
 	name: string;
 	phone: string;
 	email: string;
 	role: string;
-	// active: number;
 	uuid: string;
 	status: any;
 }
@@ -31,6 +30,7 @@ const { Option } = Select;
 // };
 
 export default function ListUser() {
+	const navigate = useNavigate();
 	const typingTimeoutRef = useRef(null);
 	const { Search } = Input;
 	const [filterSearch, setFilterSearch] = useState<string>('');
@@ -43,7 +43,6 @@ export default function ListUser() {
 		search: '',
 		page: '',
 		limit: '',
-		// active: '',
 		status: '',
 	});
 	console.log(dataUser);
@@ -91,21 +90,6 @@ export default function ListUser() {
 			key: 'uuid',
 			dataIndex: 'uuid',
 		},
-		// {
-		// 	title: 'Active',
-		// 	dataIndex: 'active',
-		// 	key: 'active',
-		// 	render: (_, record) => (
-		// 		<Space size="middle">
-		// 			<Switch
-		// 				checked={record.active === 1}
-		// 				onClick={() => {
-		// 					// handleSwitch(record.uuid);
-		// 				}}
-		// 			/>
-		// 		</Space>
-		// 	),
-		// },
 		{
 			title: 'Status',
 			dataIndex: 'status',
@@ -113,7 +97,7 @@ export default function ListUser() {
 			render: (_, record) => (
 				<Space size="middle">
 					<Switch
-						checked={record.status == 1}
+						checked={record.status === 1}
 						onChange={() => {
 							handleSwitchStatus(record.uuid);
 						}}
@@ -122,25 +106,6 @@ export default function ListUser() {
 			),
 		},
 	];
-
-	// const data: any = dataUser?.map((item: any, index: number) => {
-	// 	return {
-	// 		name: item.name,
-	// 		phone: item.phone,
-	// 		email: item.email,
-	// 		role: item.role,
-	// 		status: item.status,
-	// 		uuid: item.uuid,
-	// 		// status: (
-	// 		// 	<Switch
-	// 		// 		checked={item.status == 1 ? true : false}
-	// 		// 		onChange={(checked: boolean) => {
-	// 		// 			handleSwitchStatus(item.uuid);
-	// 		// 		}}
-	// 		// 	/>
-	// 		// ),
-	// 	};
-	// });
 
 	const onShowSizeChange: PaginationProps['onShowSizeChange'] = (current, pageSize) => {
 		setNumberLimit(pageSize);
@@ -195,13 +160,6 @@ export default function ListUser() {
 	};
 
 	const handleSwitchStatus = (paramsUuid: string) => {
-		dataUser.find((item: any, index: number) => {
-			if (item.uuid == paramsUuid) {
-				{
-					item.status == 1 ? (dataUser[index].status = 0) : (dataUser[index].status = 1);
-				}
-			}
-		});
 		changeStatusUser(paramsUuid)
 			.then(res => {
 				console.log(res);
@@ -209,7 +167,6 @@ export default function ListUser() {
 			})
 			.catch(err => {
 				console.log(err);
-				message.success(err.data.message);
 			});
 	};
 
