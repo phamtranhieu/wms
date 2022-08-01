@@ -27,7 +27,7 @@ export default function Authenticate() {
 					setUserAndPasswordLocal(values);
 					setAccessToken(res.data.results.token);
 					setIsSpin(false);
-					navigate('/home');
+					navigate('/home/list-user');
 				} else {
 					message.error(res.data.message);
 					setIsSpin(false);

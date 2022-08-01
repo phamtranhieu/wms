@@ -41,15 +41,15 @@ export default function Home() {
 	}
 
 	const items: MenuItem[] = [
-		getItem('DANH SÁCH NGƯỜI DÙNG', 'sub1', <DesktopOutlined />, [
-			getItem('Tài khoản người dùng', '/home/list-user'),
-			getItem('Nhóm người dùng', '/home/role-user'),
+		getItem('LIST USER', 'sub1', <DesktopOutlined />, [
+			// getItem('Tài khoản người dùng', '/home/list-user'),
+			// getItem('Nhóm người dùng', '/home/role-user'),
 		]),
 
-		getItem('QUẢN LÝ DỮ LIỆU NGUỒN', 'sub2', <FileOutlined />, []),
+		// getItem('QUẢN LÝ DỮ LIỆU NGUỒN', 'sub2', <FileOutlined />, []),
 
-		getItem('QUẢN LÝ MÁY MÓC THIẾT BỊ', 'sub3', <PieChartOutlined />, []),
-		getItem('QUẢN LÝ NGHIỆP VỤ', 'sub4', <TeamOutlined />, []),
+		// getItem('QUẢN LÝ MÁY MÓC THIẾT BỊ', 'sub3', <PieChartOutlined />, []),
+		// getItem('QUẢN LÝ NGHIỆP VỤ', 'sub4', <TeamOutlined />, []),
 	];
 
 	const handleLogout = () => {
@@ -59,7 +59,7 @@ export default function Home() {
 			.then(res => {
 				console.log(res);
 				message.success(res.data.message);
-				// deleteUserAndPasswordLocal();
+				deleteUserAndPasswordLocal();
 				deleteAccessToken();
 				navigate('/');
 			})
@@ -78,7 +78,12 @@ export default function Home() {
 	};
 	return (
 		<Layout className="bg-layout">
-			<Sider collapsible collapsed={collapsed} onCollapse={value => setCollapsed(value)}>
+			<Sider
+				className="siderbar lg:hidden"
+				collapsible
+				collapsed={collapsed}
+				onCollapse={value => setCollapsed(value)}
+			>
 				<div className="logo h-[64px] text-white flex items-center ml-[20px]"></div>
 				<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={onClick} />
 			</Sider>
@@ -97,27 +102,29 @@ export default function Home() {
 						<BellOutlined className=" mr-[20px]" />
 						<div className="relative button-down p-[20px] flex justify-center items-center">
 							<DownOutlined className="text-white" />
-							<ul className="list text-white bg-white absolute w-[85px] top-[50px] left-[-45px]">
+							<ul className="list text-white bg-white absolute w-[7rem] top-[50px] left-[-45px] mb-0 shadow-gray-400 rounded-sm">
 								<li
-									className="text-[black] text-center h-[50px] leading-10 list_item"
-									onClick={handleChangePass}
-								>
-									Đổi mật khẩu
-								</li>
-								<li
-									className=" text-[black] text-center h-[50px] leading-10 list_item"
+									className=" text-[black] text-center
+									 leading-10 list_item shadow-lg"
 									onClick={handleLogout}
 								>
-									Đăng xuất
+									Log out
+								</li>
+								<li
+									className="text-[black] text-center
+									 leading-10 list_item  shadow-lg"
+									onClick={handleChangePass}
+								>
+									Change Password
 								</li>
 							</ul>
 						</div>
 					</div>
 				</Header>
-				<Content style={{ margin: '0 16px' }}>
+				<Content className="mx-[16px] my-0">
 					<Outlet />
 				</Content>
-				<Footer style={{ textAlign: 'center' }}></Footer>
+				<Footer className="text-center"></Footer>
 			</Layout>
 		</Layout>
 	);

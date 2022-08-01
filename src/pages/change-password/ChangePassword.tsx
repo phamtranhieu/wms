@@ -73,7 +73,7 @@ export default function Authenticate() {
 							className="items-center w-full h-full bg-white rounded my-auto"
 						>
 							<div className="p-5">
-								<h1 className="mb-[20px] text-2xl font-sans text-center">CHANGE PASSWORD</h1>
+								<h1 className="mb-5 text-2xl font-sans text-center">CHANGE PASSWORD</h1>
 								<Form.Item
 									name="password_old"
 									rules={[

@@ -11,9 +11,12 @@ import {
 	UserOutlined,
 	BellOutlined,
 	DownOutlined,
+	DeleteOutlined,
+	EditOutlined,
 } from '@ant-design/icons';
 import { dataActive } from './dataOptionActive';
 import { useSearchParams, useNavigate } from 'react-router-dom';
+import { typeDataUser, typeSelect } from '../../interface/user/user.interface';
 
 interface DataType {
 	name: string;
@@ -24,10 +27,6 @@ interface DataType {
 	status: any;
 }
 const { Option } = Select;
-
-// type IDataUser = {
-// 	status: any;
-// };
 
 export default function ListUser() {
 	const navigate = useNavigate();
@@ -64,17 +63,26 @@ export default function ListUser() {
 				console.log(err);
 			});
 	}, [objParams]);
+
+	const handleDelete = (paramsUuid: string) => {
+		console.log(paramsUuid);
+	};
+
+	const handleEdit = (paramsUuid: string) => {
+		console.log(paramsUuid);
+	};
+
 	const columns: ColumnsType<DataType> = [
 		{
 			title: 'Name',
 			dataIndex: 'name',
 			key: 'name',
 		},
-		{
-			title: 'Phone',
-			dataIndex: 'phone',
-			key: 'phone',
-		},
+		// {
+		// 	title: 'Phone',
+		// 	dataIndex: 'phone',
+		// 	key: 'phone',
+		// },
 		{
 			title: 'Email',
 			dataIndex: 'email',
@@ -100,6 +108,25 @@ export default function ListUser() {
 						checked={record.status === 1}
 						onChange={() => {
 							handleSwitchStatus(record.uuid);
+						}}
+					/>
+				</Space>
+			),
+		},
+		{
+			title: 'Action',
+			dataIndex: 'action',
+			key: 'action',
+			render: (_, record) => (
+				<Space size="middle" className="">
+					<DeleteOutlined
+						onClick={() => {
+							handleDelete(record.uuid);
+						}}
+					/>
+					<EditOutlined
+						onClick={() => {
+							handleEdit(record.uuid);
 						}}
 					/>
 				</Space>
@@ -144,6 +171,7 @@ export default function ListUser() {
 			}, 300);
 		}
 	};
+
 	const handleChangeSelect = (e: any) => {
 		setStatusActive(e);
 		setObjParams({
@@ -159,8 +187,8 @@ export default function ListUser() {
 		});
 	};
 
-	const handleSwitchStatus = (paramsUuid: string) => {
-		changeStatusUser(paramsUuid)
+	const handleSwitchStatus = async (paramsUuid: string) => {
+		await changeStatusUser(paramsUuid)
 			.then(res => {
 				console.log(res);
 				message.success(res.data.message);
@@ -168,18 +196,32 @@ export default function ListUser() {
 			.catch(err => {
 				console.log(err);
 			});
+
+		await getListUser(objParams)
+			.then((res: any) => {
+				console.log(res);
+				setLengthDataUser(res.data.results.total);
+				setDataUser(res.data.results.data);
+			})
+			.catch((err: any) => {
+				console.log(err);
+			});
 	};
+
+	const dataUserRender = dataUser.filter((item: typeDataUser, index: number) => {
+		return item.role === 'user';
+	});
 
 	return (
 		<div className="mt-[20px]">
-			<h1>DANH SÁCH TÀI KHOẢN NGƯỜI DÙNG</h1>
+			<h1>LIST ACCOUNT USER</h1>
 			<div className="flex items-center">
-				<div className="w-[500px] my-3 mr-3">
-					<p className="font-semibold">Tìm theo tên người dùng</p>
-					<Search placeholder="Tìm người dùng" onChange={handleChange} />
+				<div className="w-[500px] my-3 mr-3 md:hidden">
+					<p className="font-semibold">Find User</p>
+					<Search placeholder="Find user" onChange={handleChange} />
 				</div>
-				<div>
-					<p className="font-semibold">Trạng thái hoạt động</p>
+				<div className="md:hidden">
+					<p className="font-semibold">Status</p>
 					<Select className="w-[150px]" defaultValue={dataActive[2].value} onChange={handleChangeSelect}>
 						{dataActive.map((item: any, index: number) => {
 							return (
@@ -191,7 +233,7 @@ export default function ListUser() {
 					</Select>
 				</div>
 			</div>
-			<Table columns={columns} dataSource={dataUser} pagination={false} />
+			<Table columns={columns} dataSource={dataUserRender} pagination={false} />
 			<div className="flex justify-end mt-3">
 				<Pagination
 					showSizeChanger
