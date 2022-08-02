@@ -6,7 +6,8 @@ import type { PaginationProps } from 'antd';
 import { EditOutlined } from '@ant-design/icons';
 import { dataActive } from './dataOptionActive';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { typeDataUser, typeSelect } from '../../interface/user/user.interface';
+import { TypeDataUser } from '../../interface/user/user.interface';
+
 import PopupAdd from '../popup-add/PopupAdd';
 
 interface DataType {
@@ -29,6 +30,9 @@ export default function ListUser() {
 	const [numberLimit, setNumberLimit] = useState(10);
 	const [lengtDataUser, setLengthDataUser] = useState<number>(0);
 	const [dataUser, setDataUser] = useState<any>([]);
+
+	const [blockDataUser, setBlockDataUser] = useState({ lengthUser: 0, dataUser: [] });
+
 	const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
 	const [searchParams, setSearchParams] = useSearchParams({
 		search: '',
@@ -36,24 +40,27 @@ export default function ListUser() {
 		limit: '',
 		status: '',
 	});
+
 	const [objParams, setObjParams] = useState({
 		search: '',
 		page: 1,
 		limit: 10,
 		status: '',
 	});
+
 	useEffect(() => {
 		getListUser(objParams)
 			.then((res: any) => {
 				console.log(res);
-				setLengthDataUser(res.data.results.total);
-				setDataUser(res.data.results.data);
+				// setLengthDataUser(res.data.results.total);
+				// setDataUser(res.data.results.data);
+				setBlockDataUser({ lengthUser: res.data.results.total, dataUser: res.data.results.data });
 			})
 			.catch((err: any) => {
 				console.log(err);
 			});
 	}, [objParams]);
-
+	console.log(blockDataUser);
 	const columns: ColumnsType<DataType> = [
 		{
 			title: 'Name',
@@ -159,15 +166,14 @@ export default function ListUser() {
 		await getListUser(objParams)
 			.then((res: any) => {
 				console.log(res);
-				setLengthDataUser(res.data.results.total);
-				setDataUser(res.data.results.data);
+				setBlockDataUser({ lengthUser: res.data.results.total, dataUser: res.data.results.data });
 			})
 			.catch((err: any) => {
 				console.log(err);
 			});
 	};
 
-	const dataUserRender = dataUser.filter((item: typeDataUser, index: number) => {
+	const dataUserRender = blockDataUser.dataUser.filter((item: TypeDataUser, index: number) => {
 		return item.role === 'user';
 	});
 
@@ -213,9 +219,8 @@ export default function ListUser() {
 				<div className="flex justify-end mt-3">
 					<Pagination
 						showSizeChanger
-						// onShowSizeChange={onShowSizeChange}
 						defaultCurrent={1}
-						total={lengtDataUser}
+						total={blockDataUser.lengthUser}
 						onChange={onShowSizeChange}
 					/>
 				</div>

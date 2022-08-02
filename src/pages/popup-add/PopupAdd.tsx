@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { FolderOutlined, PhoneOutlined, LockOutlined } from '@ant-design/icons';
 import { errorAuth } from '../../enum/auth/auth.error';
 import { userRegister } from '../../service/auth/AuthService';
+import { formatEmail } from '../../constant/data/data.constant';
+import './PopupAdd.scss';
 
 export default function PopupAdd(props: any) {
 	const { ModalVisibleAdd, handleCancel } = props;
@@ -48,7 +50,13 @@ export default function PopupAdd(props: any) {
 	return (
 		<div>
 			<Spin size="small" spinning={isSpin} delay={1000}>
-				<Modal title="Register User" visible={ModalVisibleAdd} onCancel={handleCancel} footer={null}>
+				<Modal
+					title="Register User"
+					visible={ModalVisibleAdd}
+					onCancel={handleCancel}
+					footer={null}
+					className="rounded-md"
+				>
 					<Form
 						name="basic"
 						labelCol={{ span: 32 }}
@@ -111,11 +119,9 @@ export default function PopupAdd(props: any) {
 								rules={[
 									{
 										validator(rule, val) {
-											const testRegex =
-												/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 											if (val === undefined || val === null || val === '') {
 												return Promise.reject(new Error(errorAuth.EMAIL_NONE));
-											} else if (!testRegex.test(val)) {
+											} else if (!formatEmail.test(val)) {
 												return Promise.reject(new Error(errorAuth.EMAIL_FORMAT));
 											} else {
 												return Promise.resolve();

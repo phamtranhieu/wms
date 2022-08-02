@@ -84,7 +84,7 @@ export default function Home() {
 				collapsed={collapsed}
 				onCollapse={value => setCollapsed(value)}
 			>
-				<div className="logo h-[64px] text-white flex items-center ml-[20px]"></div>
+				<div className="logo h-10 text-white flex items-center ml-5"></div>
 				<Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} onClick={onClick} />
 			</Sider>
 			<Layout className="site-layout">
@@ -102,7 +102,7 @@ export default function Home() {
 						<BellOutlined className=" mr-[20px]" />
 						<div className="relative button-down p-[20px] flex justify-center items-center">
 							<DownOutlined className="text-white" />
-							<ul className="list text-white bg-white absolute w-[7rem] top-[50px] left-[-45px] mb-0 shadow-gray-400 rounded-sm">
+							<ul className="list text-white bg-white absolute w-[7rem] top-[3rem] left-[-45px] mb-0 shadow-gray-400 rounded-sm">
 								<li
 									className=" text-[black] text-center
 									 leading-10 list_item shadow-lg"

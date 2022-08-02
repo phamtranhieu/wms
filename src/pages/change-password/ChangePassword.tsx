@@ -82,7 +82,7 @@ export default function Authenticate() {
 												if (val === undefined || val === null || val === '') {
 													return Promise.reject(new Error(errorAuth.PASSWORD_NONE));
 												} else if (val !== checkPass.password) {
-													return Promise.reject(new Error('Not same connected password'));
+													return Promise.reject(new Error(errorAuth.PASSWORD_SAME_OLD_NONE));
 												} else {
 													return Promise.resolve();
 												}

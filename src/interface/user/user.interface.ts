@@ -1,4 +1,4 @@
-export interface typeDataUser {
+export interface TypeDataUser {
 	id: string;
 	name: string;
 	phone: string;
@@ -8,7 +8,7 @@ export interface typeDataUser {
 	email: string;
 }
 
-export interface typeSelect {
+export interface TypeSelect {
 	title: string;
 	key: number;
 	value: string;
