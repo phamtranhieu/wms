@@ -2,10 +2,10 @@ import apiClient from '../../config/apiClient';
 import { deleteAccessToken, setAccessToken, setToken } from '../../helper/tokenHelper';
 import { configApp } from '../../config/config';
 
-import { authInterface, typeChangePassword } from '../../interface/auth/auth.interface';
+import { AuthInterface, TypeChangePassword } from '../../interface/auth/auth.interface';
 
-export const userLogin = async (params: authInterface) => {
-	return await apiClient.post('/login', params);
+export const userLoginAdmin = async (params: AuthInterface) => {
+	return await apiClient.post('/login-admin', params);
 };
 
 export const userLogout = async (params: any) => {

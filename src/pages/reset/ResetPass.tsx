@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input, message, Spin } from 'antd';
 import { FolderOutlined, LockOutlined } from '@ant-design/icons';
 import { errorAuth } from '../../enum/auth/auth.error';
-import { userLogin, userResetPassword } from '../../service/auth/AuthService';
+import { userResetPassword } from '../../service/auth/AuthService';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAction } from '../../reducer/userReducer';
 import { useNavigate } from 'react-router-dom';

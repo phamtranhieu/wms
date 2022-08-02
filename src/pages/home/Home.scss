@@ -1,0 +1,22 @@
+.list {
+	visibility: hidden;
+}
+.button-down:hover .list {
+	visibility: visible;
+	cursor: pointer;
+}
+.list li:hover {
+	background-color: gray;
+}
+.bg-layout {
+	min-height: 100vh;
+}
+// .siderbar {
+// 	flex: 0 0 250px !important;
+// 	max-width: 250px !important;
+// 	min-width: 250px !important;
+// 	width: 250px !important;
+// 	.ant-layout-sider-trigger {
+// 		width: 300px !important;
+// 	}
+// }

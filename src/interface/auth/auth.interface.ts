@@ -1,4 +1,4 @@
-export interface authInterface {
+export interface AuthInterface {
 	email: string;
 	password: string;
 }
@@ -8,7 +8,7 @@ export interface ParamFieldItems {
 	name: number;
 }
 
-export interface typeUser {
+export interface TypeUser {
 	accessToken: string;
 	employeeId: null | string;
 	employeeName: null | string;
@@ -21,18 +21,18 @@ export interface typeUser {
 	userId: string;
 	userName: string;
 }
-export interface typeDataSliderChild {
+export interface TypeDataSliderChild {
 	id: number;
 	titleChild: string;
 	link: string;
 }
-export interface typeDataSlider {
+export interface TypeDataSlider {
 	id: number;
 	title: number;
 	dataChild: [];
 }
 
-export interface typeChangePassword {
+export interface TypeChangePassword {
 	oldPassword: string;
 	password: string;
 }

@@ -14,7 +14,7 @@ export const deleteAccessToken = () => {
 };
 
 // get user password for remember me
-const userInfoKey = 'useInfo';
+export const userInfoKey = 'useInfo';
 export const getUserAndPassword = () => {
 	try {
 		const localInfo = localStorage.getItem(userInfoKey);

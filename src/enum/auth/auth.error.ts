@@ -9,4 +9,5 @@ export enum errorAuth {
 	'PHONE_NUMBER' = 'Phone not correct format!',
 	'PASSWORD_INCORRECT' = 'Confirm password is incorrect',
 	'PASSWORD_CONFIRM_NONE' = 'Please input confirm your password!',
+	'PASSWORD_SAME_OLD_NONE' = 'Not same connected password',
 }
