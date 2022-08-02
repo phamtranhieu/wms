@@ -1,22 +1,13 @@
-import { Space, Table, Tag, Pagination, Input, Switch, Select, message } from 'antd';
+import { Space, Table, Tag, Pagination, Input, Switch, Select, message, Button, Modal } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState, useRef } from 'react';
 import { getListUser, changeStatusUser } from '../../service/user/UserService';
 import type { PaginationProps } from 'antd';
-import {
-	DesktopOutlined,
-	FileOutlined,
-	PieChartOutlined,
-	TeamOutlined,
-	UserOutlined,
-	BellOutlined,
-	DownOutlined,
-	DeleteOutlined,
-	EditOutlined,
-} from '@ant-design/icons';
+import { EditOutlined } from '@ant-design/icons';
 import { dataActive } from './dataOptionActive';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { typeDataUser, typeSelect } from '../../interface/user/user.interface';
+import PopupAdd from '../popup-add/PopupAdd';
 
 interface DataType {
 	name: string;
@@ -38,20 +29,19 @@ export default function ListUser() {
 	const [numberLimit, setNumberLimit] = useState(10);
 	const [lengtDataUser, setLengthDataUser] = useState<number>(0);
 	const [dataUser, setDataUser] = useState<any>([]);
+	const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
 	const [searchParams, setSearchParams] = useSearchParams({
 		search: '',
 		page: '',
 		limit: '',
 		status: '',
 	});
-	console.log(dataUser);
 	const [objParams, setObjParams] = useState({
 		search: '',
 		page: 1,
 		limit: 10,
 		status: '',
 	});
-	console.log(dataUser);
 	useEffect(() => {
 		getListUser(objParams)
 			.then((res: any) => {
@@ -64,25 +54,13 @@ export default function ListUser() {
 			});
 	}, [objParams]);
 
-	const handleDelete = (paramsUuid: string) => {
-		console.log(paramsUuid);
-	};
-
-	const handleEdit = (paramsUuid: string) => {
-		console.log(paramsUuid);
-	};
-
 	const columns: ColumnsType<DataType> = [
 		{
 			title: 'Name',
 			dataIndex: 'name',
 			key: 'name',
 		},
-		// {
-		// 	title: 'Phone',
-		// 	dataIndex: 'phone',
-		// 	key: 'phone',
-		// },
+
 		{
 			title: 'Email',
 			dataIndex: 'email',
@@ -108,25 +86,6 @@ export default function ListUser() {
 						checked={record.status === 1}
 						onChange={() => {
 							handleSwitchStatus(record.uuid);
-						}}
-					/>
-				</Space>
-			),
-		},
-		{
-			title: 'Action',
-			dataIndex: 'action',
-			key: 'action',
-			render: (_, record) => (
-				<Space size="middle" className="">
-					<DeleteOutlined
-						onClick={() => {
-							handleDelete(record.uuid);
-						}}
-					/>
-					<EditOutlined
-						onClick={() => {
-							handleEdit(record.uuid);
 						}}
 					/>
 				</Space>
@@ -212,37 +171,56 @@ export default function ListUser() {
 		return item.role === 'user';
 	});
 
+	const handleCancel = () => {
+		setIsModalVisibleAdd(false);
+	};
+
+	const handleAdd = () => {
+		setIsModalVisibleAdd(true);
+	};
 	return (
-		<div className="mt-[20px]">
-			<h1>LIST ACCOUNT USER</h1>
-			<div className="flex items-center">
-				<div className="w-[500px] my-3 mr-3 md:hidden">
-					<p className="font-semibold">Find User</p>
-					<Search placeholder="Find user" onChange={handleChange} />
+		<>
+			<div className="mt-10">
+				<h1>LIST ACCOUNT USER</h1>
+				<div className="flex items-center ">
+					<div className="w-[500px] my-3 mr-3 md:hidden">
+						<Search placeholder="Find user" onChange={handleChange} />
+					</div>
+					<div className="md:hidden">
+						<Select className="w-[150px]" defaultValue={dataActive[2].value} onChange={handleChangeSelect}>
+							{dataActive.map((item: any, index: number) => {
+								return (
+									<>
+										<Option value={item.value}>{item.title}</Option>
+									</>
+								);
+							})}
+						</Select>
+					</div>
+					<div className="w-[30rem]"></div>
+					<div className="md:hidden ml-2">
+						<Button
+							className=""
+							onClick={() => {
+								handleAdd();
+							}}
+						>
+							Add User
+						</Button>
+					</div>
 				</div>
-				<div className="md:hidden">
-					<p className="font-semibold">Status</p>
-					<Select className="w-[150px]" defaultValue={dataActive[2].value} onChange={handleChangeSelect}>
-						{dataActive.map((item: any, index: number) => {
-							return (
-								<>
-									<Option value={item.value}>{item.title}</Option>
-								</>
-							);
-						})}
-					</Select>
+				<Table columns={columns} dataSource={dataUserRender} pagination={false} />
+				<div className="flex justify-end mt-3">
+					<Pagination
+						showSizeChanger
+						// onShowSizeChange={onShowSizeChange}
+						defaultCurrent={1}
+						total={lengtDataUser}
+						onChange={onShowSizeChange}
+					/>
 				</div>
 			</div>
-			<Table columns={columns} dataSource={dataUserRender} pagination={false} />
-			<div className="flex justify-end mt-3">
-				<Pagination
-					showSizeChanger
-					// onShowSizeChange={onShowSizeChange}
-					defaultCurrent={1}
-					total={lengtDataUser}
-					onChange={onShowSizeChange}
-				/>
-			</div>
-		</div>
+			<PopupAdd ModalVisibleAdd={isModalVisibleAdd} handleCancel={handleCancel} />
+		</>
 	);
 }
