@@ -1,26 +1,19 @@
-import {
-	DesktopOutlined,
-	FileOutlined,
-	PieChartOutlined,
-	TeamOutlined,
-	UserOutlined,
-	BellOutlined,
-	DownOutlined,
-} from '@ant-design/icons';
+import { DesktopOutlined, UserOutlined, BellOutlined, DownOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, message } from 'antd';
-import React, { useState } from 'react';
+import { Layout, Menu, message } from 'antd';
+import React, { useState, useEffect } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { userLogout } from '../../service/auth/AuthService';
 import { configApp } from '../../config/config';
-import { deleteAccessToken, deleteUserAndPasswordLocal } from '../../helper/tokenHelper';
+import { deleteAccessToken, deleteUserAndPasswordLocal, getToken } from '../../helper/tokenHelper';
 
-const { Header, Content, Footer, Sider } = Layout;
 import './Home.scss';
 
 export default function Home() {
+	// const navigate = useNavigate();
+
 	type MenuItem = Required<MenuProps>['items'][number];
-	const { Header, Sider, Content } = Layout;
+	const { Header, Sider, Content, Footer } = Layout;
 	const navigate = useNavigate();
 	const [collapsed, setCollapsed] = useState(false);
 
@@ -54,7 +47,6 @@ export default function Home() {
 
 	const handleLogout = () => {
 		const accessToken = localStorage.getItem(configApp.tokenKey);
-		console.log(accessToken);
 		userLogout(accessToken)
 			.then(res => {
 				console.log(res);
@@ -94,15 +86,15 @@ export default function Home() {
 							onClick={() => {
 								navigate('/home');
 							}}
-							className="mr-[20px]"
+							className="mr-5"
 						/>
 						<p className="text-white mb-0 title">WEB ADMIN</p>
 					</div>
-					<div className="flex items-center text-white mr-[20px] ">
-						<BellOutlined className=" mr-[20px]" />
-						<div className="relative button-down p-[20px] flex justify-center items-center">
+					<div className="flex items-center text-white mr-5 ">
+						<BellOutlined className=" mr-5" />
+						<div className="relative button-down p-5 flex justify-center items-center">
 							<DownOutlined className="text-white" />
-							<ul className="list text-white bg-white absolute w-[7rem] top-[3rem] left-[-45px] mb-0 shadow-gray-400 rounded-sm">
+							<ul className="list text-white bg-white absolute w-[7rem] top-[3rem] mb-0 shadow-gray-400 rounded-sm">
 								<li
 									className=" text-[black] text-center
 									 leading-10 list_item shadow-lg"
@@ -121,7 +113,7 @@ export default function Home() {
 						</div>
 					</div>
 				</Header>
-				<Content className="mx-[16px] my-0">
+				<Content className="mx-4 my-0">
 					<Outlet />
 				</Content>
 				<Footer className="text-center"></Footer>

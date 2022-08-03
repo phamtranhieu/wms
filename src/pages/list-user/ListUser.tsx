@@ -1,38 +1,24 @@
-import { Space, Table, Tag, Pagination, Input, Switch, Select, message, Button, Modal } from 'antd';
+import { Space, Table, Pagination, Input, Switch, Select, message, Button } from 'antd';
 import type { ColumnsType } from 'antd/es/table';
 import React, { useEffect, useState, useRef } from 'react';
 import { getListUser, changeStatusUser } from '../../service/user/UserService';
 import type { PaginationProps } from 'antd';
-import { EditOutlined } from '@ant-design/icons';
 import { dataActive } from './dataOptionActive';
-import { useSearchParams, useNavigate } from 'react-router-dom';
-import { TypeDataUser } from '../../interface/user/user.interface';
+import { useSearchParams } from 'react-router-dom';
+import { DataType, TypeDataUser, TypeSelect } from '../../interface/list-user/list_user.interface';
 
 import PopupAdd from '../popup-add/PopupAdd';
-
-interface DataType {
-	name: string;
-	phone: string;
-	email: string;
-	role: string;
-	uuid: string;
-	status: any;
-}
 const { Option } = Select;
 
 export default function ListUser() {
-	const navigate = useNavigate();
 	const typingTimeoutRef = useRef(null);
 	const { Search } = Input;
 	const [filterSearch, setFilterSearch] = useState<string>('');
 	const [statusActive, setStatusActive] = useState();
 	const [numberPage, setNumberPage] = useState(1);
 	const [numberLimit, setNumberLimit] = useState(10);
-	const [lengtDataUser, setLengthDataUser] = useState<number>(0);
-	const [dataUser, setDataUser] = useState<any>([]);
 
 	const [blockDataUser, setBlockDataUser] = useState({ lengthUser: 0, dataUser: [] });
-
 	const [isModalVisibleAdd, setIsModalVisibleAdd] = useState(false);
 	const [searchParams, setSearchParams] = useSearchParams({
 		search: '',
@@ -52,15 +38,13 @@ export default function ListUser() {
 		getListUser(objParams)
 			.then((res: any) => {
 				console.log(res);
-				// setLengthDataUser(res.data.results.total);
-				// setDataUser(res.data.results.data);
 				setBlockDataUser({ lengthUser: res.data.results.total, dataUser: res.data.results.data });
 			})
 			.catch((err: any) => {
 				console.log(err);
 			});
 	}, [objParams]);
-	console.log(blockDataUser);
+
 	const columns: ColumnsType<DataType> = [
 		{
 			title: 'Name',
@@ -184,17 +168,18 @@ export default function ListUser() {
 	const handleAdd = () => {
 		setIsModalVisibleAdd(true);
 	};
+
 	return (
 		<>
 			<div className="mt-10">
 				<h1>LIST ACCOUNT USER</h1>
 				<div className="flex items-center ">
-					<div className="w-[500px] my-3 mr-3 md:hidden">
+					<div className="w-1/3 my-3 mr-3 md:hidden">
 						<Search placeholder="Find user" onChange={handleChange} />
 					</div>
 					<div className="md:hidden">
-						<Select className="w-[150px]" defaultValue={dataActive[2].value} onChange={handleChangeSelect}>
-							{dataActive.map((item: any, index: number) => {
+						<Select className="w-40" defaultValue={dataActive[2].value} onChange={handleChangeSelect}>
+							{dataActive.map((item: TypeSelect, index: number) => {
 								return (
 									<>
 										<Option value={item.value}>{item.title}</Option>
@@ -203,7 +188,7 @@ export default function ListUser() {
 							})}
 						</Select>
 					</div>
-					<div className="w-[30rem]"></div>
+					<div className="w-1/3"></div>
 					<div className="md:hidden ml-2">
 						<Button
 							className=""
@@ -216,7 +201,7 @@ export default function ListUser() {
 					</div>
 				</div>
 				<Table columns={columns} dataSource={dataUserRender} pagination={false} />
-				<div className="flex justify-end mt-3">
+				<div className="flex justify-end mt-3 ">
 					<Pagination
 						showSizeChanger
 						defaultCurrent={1}

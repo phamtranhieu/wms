@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { userAction } from '../../reducer/userReducer';
 import { useNavigate } from 'react-router-dom';
 import { setAccessToken, setUserAndPasswordLocal } from '../../helper/tokenHelper';
+import { formatEmail } from '../../constant/data/data.constant';
+import { AuthInterface } from '../../interface/auth/auth.interface';
 
 import './Authenticate.scss';
 
@@ -15,26 +17,22 @@ export default function Authenticate() {
 	const [isSpin, setIsSpin] = useState(false);
 	const navigate = useNavigate();
 
-	const onFinish = (values: any) => {
+	const onFinish = (values: AuthInterface) => {
 		console.log('Success:', values);
 		setIsSpin(true);
 		userLoginAdmin(values)
 			.then(res => {
 				console.log(res);
-				if (res.data.success) {
-					dispatch(userAction.setUserLogin(res.data.results));
-					message.success(res.data.message);
-					setUserAndPasswordLocal(values);
-					setAccessToken(res.data.results.token);
-					setIsSpin(false);
-					navigate('/home/list-user');
-				} else {
-					message.error(res.data.message);
-					setIsSpin(false);
-				}
+				dispatch(userAction.setUserLogin(res.data.results));
+				message.success(res.data.message);
+				setUserAndPasswordLocal(values);
+				setAccessToken(res.data.results.token);
+				setIsSpin(false);
+				navigate('/home/list-user');
 			})
 			.catch(err => {
 				console.log(err);
+				message.error(err.response.data.message);
 				setIsSpin(false);
 			});
 	};
@@ -45,7 +43,7 @@ export default function Authenticate() {
 	return (
 		<Spin size="small" spinning={isSpin} delay={1000}>
 			<div className="w-full h-[100vh] bg_auth flex items-center">
-				<div className="w-[400px]  mx-auto rounded-md p-3">
+				<div className="w-96 mx-auto rounded-md p-3">
 					<Form
 						name="basic"
 						labelCol={{ span: 32 }}
@@ -59,17 +57,15 @@ export default function Authenticate() {
 						className="items-center w-full h-full bg-white rounded my-auto"
 					>
 						<div className="p-5">
-							<h1 className="mb-[20px] text-2xl font-sans text-center">LOG IN</h1>
+							<h1 className="mb-5 text-2xl font-sans text-center">LOG IN</h1>
 							<Form.Item
 								name="email"
 								rules={[
 									{
 										validator(rule, val) {
-											const testRegex =
-												/^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 											if (val === undefined || val === null || val === '') {
 												return Promise.reject(new Error(errorAuth.EMAIL_NONE));
-											} else if (!testRegex.test(val)) {
+											} else if (!formatEmail.test(val)) {
 												return Promise.reject(new Error(errorAuth.EMAIL_FORMAT));
 											} else {
 												return Promise.resolve();
@@ -99,7 +95,7 @@ export default function Authenticate() {
 										},
 									},
 								]}
-								className="mb-[40px]"
+								className="mb-10"
 							>
 								<Input.Password
 									prefix={<LockOutlined className="mr-2" />}
