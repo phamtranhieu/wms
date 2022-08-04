@@ -23,7 +23,6 @@ export default function Authenticate() {
 			password: values.password_old,
 			password_new: values.password_new,
 		};
-		console.log(sendParams);
 		if (accessToken) {
 			setIsSpin(true);
 			userUpdatePassword(sendParams)
@@ -31,7 +30,14 @@ export default function Authenticate() {
 					console.log(res);
 					message.success(res.data.message);
 					setIsSpin(false);
-					navigate('/home');
+					const LocalInfor = localStorage.getItem(userInfoKey);
+					let newLocalInfor;
+					if (LocalInfor) {
+						newLocalInfor = JSON.parse(LocalInfor);
+						newLocalInfor.password = sendParams.password_new;
+					}
+					localStorage.setItem(userInfoKey, JSON.stringify(newLocalInfor));
+					navigate('/home/list-user');
 				})
 				.catch(err => {
 					console.log(err);
@@ -58,7 +64,7 @@ export default function Authenticate() {
 		<div>
 			<Spin size="small" spinning={isSpin} delay={1000}>
 				<div className="w-full h-[100vh] bg_auth flex items-center">
-					<div className="w-[400px]  mx-auto rounded-md p-3">
+					<div className="w-96  mx-auto rounded-md p-3">
 						<Form
 							name="basic"
 							labelCol={{ span: 32 }}
@@ -82,7 +88,9 @@ export default function Authenticate() {
 												if (val === undefined || val === null || val === '') {
 													return Promise.reject(new Error(errorAuth.PASSWORD_NONE));
 												} else if (val !== checkPass.password) {
-													return Promise.reject(new Error(errorAuth.PASSWORD_SAME_OLD_NONE));
+													return Promise.reject(
+														new Error(errorAuth.PASSWORD_SAME_CONNECTED_NONE),
+													);
 												} else {
 													return Promise.resolve();
 												}
@@ -125,14 +133,14 @@ export default function Authenticate() {
 										{
 											validator(rule, val) {
 												if (val !== oldPass) {
-													return Promise.reject(new Error('Not same old password'));
+													return Promise.reject(new Error(errorAuth.PASSWORD_SAME_OLD_NONE));
 												} else {
 													return Promise.resolve();
 												}
 											},
 										},
 									]}
-									className="mb-[40px]"
+									className="mb-10"
 								>
 									<Input.Password
 										prefix={<LockOutlined className="mr-2" />}

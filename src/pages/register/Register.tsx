@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Checkbox, Form, Input, message, Spin } from 'antd';
-import { FolderOutlined, LockOutlined, PhoneOutlined } from '@ant-design/icons';
+import { FolderOutlined, LockOutlined, PhoneOutlined, SnippetsOutlined } from '@ant-design/icons';
 import { errorAuth } from '../../enum/auth/auth.error';
 import { useDispatch, useSelector } from 'react-redux';
 import { userAction } from '../../reducer/userReducer';
@@ -24,17 +24,20 @@ export default function Register() {
 		userRegister(values)
 			.then(res => {
 				console.log(res);
-				if (res.data.success) {
-					message.success(res.data.message);
-					setIsSpin(false);
-				} else {
-					message.error(res.data.message);
-					setIsSpin(false);
-				}
+				message.success(res.data.message);
+				setIsSpin(false);
+				formRegister.setFieldsValue({
+					name: '',
+					phone: '',
+					email: '',
+					password: '',
+					password_confirmation: '',
+				});
 			})
 			.catch(err => {
 				console.log(err);
 				setIsSpin(false);
+				message.error(err.response.data.message);
 			});
 	};
 
@@ -50,7 +53,7 @@ export default function Register() {
 		<div>
 			<Spin size="small" spinning={isSpin} delay={1000}>
 				<div className="w-full h-[100vh] bg_auth flex items-center">
-					<div className="w-[400px]  mx-auto rounded-md p-3">
+					<div className="w-96 mx-auto rounded-md p-3">
 						<Form
 							name="basic"
 							labelCol={{ span: 32 }}
@@ -65,7 +68,7 @@ export default function Register() {
 							form={formRegister}
 						>
 							<div className="p-5">
-								<h1 className="mb-[20px] text-2xl font-sans text-center">SIGN IN</h1>
+								<h1 className="mb-5 text-2xl font-sans text-center">SIGN UP</h1>
 								<Form.Item
 									name="name"
 									rules={[
@@ -81,7 +84,7 @@ export default function Register() {
 									]}
 								>
 									<Input
-										prefix={<FolderOutlined className="mr-2" />}
+										prefix={<SnippetsOutlined className="mr-2" />}
 										placeholder="Please enter your name"
 									/>
 								</Form.Item>
@@ -147,7 +150,7 @@ export default function Register() {
 									]}
 								>
 									<Input.Password
-										prefix={<FolderOutlined className="mr-2" />}
+										prefix={<LockOutlined className="mr-2" />}
 										placeholder="Please enter your password"
 										onChange={handleChange}
 									/>
@@ -168,7 +171,7 @@ export default function Register() {
 											},
 										},
 									]}
-									className="mb-[40px]"
+									className="mb-10"
 								>
 									<Input.Password
 										prefix={<LockOutlined className="mr-2" />}

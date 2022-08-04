@@ -17,13 +17,8 @@ export default function PopupAdd(props: any) {
 		userRegister(values)
 			.then(res => {
 				console.log(res);
-				if (res.data.success) {
-					message.success(res.data.message);
-					setIsSpin(false);
-				} else {
-					message.error(res.data.message);
-					setIsSpin(false);
-				}
+				message.success(res.data.message);
+				setIsSpin(false);
 				formRegisterPopup.setFieldsValue({
 					name: '',
 					phone: '',
@@ -34,6 +29,7 @@ export default function PopupAdd(props: any) {
 			})
 			.catch(err => {
 				console.log(err);
+				message.error(err.response.data.message);
 				setIsSpin(false);
 			});
 	};
@@ -173,7 +169,7 @@ export default function PopupAdd(props: any) {
 										},
 									},
 								]}
-								className="mb-[40px]"
+								className="mb-10"
 							>
 								<Input.Password
 									prefix={<LockOutlined className="mr-2" />}
