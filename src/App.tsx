@@ -21,36 +21,10 @@ interface AuthContextType {
 	signout: (callback: VoidFunction) => void;
 }
 function App() {
-	function useAuth() {
-		return React.useContext(AuthContext);
-	}
-	let AuthContext = React.createContext<AuthContextType>(null!);
-
-	function RequireAuth({ children }: { children: JSX.Element }) {
-		let auth = useAuth();
-		let location = useLocation();
-		console.log(location);
-		if (!auth.user) {
-			// Redirect them to the /login page, but save the current location they were
-			// trying to go to when they were redirected. This allows us to send them
-			// along to that page after they login, which is a nicer user experience
-			// than dropping them off on the home page.
-			return <Navigate to="/authenticate" state={{ from: location }} replace />;
-		}
-
-		return children;
-	}
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route
-					path="/authenticate"
-					element={
-						<RequireAuth>
-							<Authenticate />
-						</RequireAuth>
-					}
-				/>
+				<Route index element={<Authenticate />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/reset-password" element={<ResetPass />} />
 				<Route
