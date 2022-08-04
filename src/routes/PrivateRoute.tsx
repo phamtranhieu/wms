@@ -6,5 +6,5 @@ import { configApp } from '../config/config';
 export default function PrivateRoute(props: any) {
 	const { children } = props;
 	console.log(children);
-	return getToken(configApp.tokenKey) ? children : <Navigate to="/" />;
+	return getToken(configApp.tokenKey) ? children : <Navigate to="/authenticate" />;
 }

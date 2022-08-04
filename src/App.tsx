@@ -24,7 +24,8 @@ function App() {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route index element={<Authenticate />} />
+				<Route index element={<Navigate to="/authenticate" />} />
+				<Route path="/authenticate" element={<Authenticate />} />
 				<Route path="/register" element={<Register />} />
 				<Route path="/reset-password" element={<ResetPass />} />
 				<Route
@@ -36,7 +37,7 @@ function App() {
 					}
 				/>
 				<Route
-					path="/home"
+					path="/"
 					element={
 						<PrivateRoute>
 							<Home />
